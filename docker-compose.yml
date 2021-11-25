@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    container_name: 'mysql-taa'
+    environment:
+      MYSQL_DATABASE: 'taa'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password1'
+      MYSQL_ROOT_PASSWORD: 'password1'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    networks:
+      - spring-db
+    volumes:
+      - my-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", 'mysqladmin ping']
+      interval: 10s
+      timeout: 2s
+      retries: 10
+  back:
+    image: taa/back
+    restart: unless-stopped
+    build: ./
+    container_name: 'backend-taa'
+    ports:
+      - '8081:8081'
+    environment:
+      WAIT_HOSTS: db:3306
+    expose:
+      - '8081'
+    links:
+      - db
+    depends_on:
+      - db
+    networks:
+      - spring-db
+
+volumes:
+  my-db:
+networks:
+  spring-db:
