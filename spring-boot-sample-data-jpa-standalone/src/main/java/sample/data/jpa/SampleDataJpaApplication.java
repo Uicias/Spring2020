@@ -26,4 +26,6 @@ public class SampleDataJpaApplication {
 		SpringApplication.run(SampleDataJpaApplication.class, args);
 	}
 
+	// App on localhost:8081
+	// Swagger-ui on localhost:8081/swagger-ui.html
 }
