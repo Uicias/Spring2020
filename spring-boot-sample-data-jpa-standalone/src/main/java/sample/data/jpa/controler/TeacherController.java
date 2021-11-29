@@ -15,6 +15,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/teacher")
 @RestControllerAdvice
+@CrossOrigin(origins = "http://localhost:8080")
 public class TeacherController {
 
     @Autowired

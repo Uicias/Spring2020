@@ -1,7 +1,6 @@
 package sample.data.jpa.controler;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +16,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/user")
 @RestControllerAdvice
+@CrossOrigin(origins = "http://localhost:8080")
 public class UserController {
 
     @Autowired

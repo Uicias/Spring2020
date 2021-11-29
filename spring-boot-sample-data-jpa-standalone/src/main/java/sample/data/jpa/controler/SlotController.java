@@ -2,7 +2,6 @@ package sample.data.jpa.controler;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.AccessType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/slot")
 @RestControllerAdvice
+@CrossOrigin(origins = "http://localhost:8080")
 public class SlotController {
 
     @Autowired
