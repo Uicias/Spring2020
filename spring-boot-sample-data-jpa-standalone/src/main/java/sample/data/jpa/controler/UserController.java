@@ -1,5 +1,7 @@
 package sample.data.jpa.controler;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
+@RestControllerAdvice
 public class UserController {
 
     @Autowired
@@ -25,6 +28,7 @@ public class UserController {
      */
     @GetMapping("/test")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Endpoint to test the connection to the service")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("User controller is OK!");
     }
@@ -37,6 +41,7 @@ public class UserController {
      * @throws UserException
      */
     @GetMapping("/{id}")
+    @Operation(summary = "Get a user from his id")
     public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long id) {
         Optional<User> user = this.userDao.findById(id);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
@@ -50,6 +55,7 @@ public class UserController {
      * @throws UserException
      */
     @PostMapping("/create")
+    @Operation(summary = "Create a user from data given")
     public ResponseEntity<User> createUser(@RequestBody User user) throws UserException {
         // The couple first and last name shall be unique
         if (!userDao.findUserByFirstNameAndLastName(user.getFirstName(), user.getLastName()).isPresent()) {

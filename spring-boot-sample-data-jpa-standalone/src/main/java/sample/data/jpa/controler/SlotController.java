@@ -1,5 +1,6 @@
 package sample.data.jpa.controler;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.http.HttpStatus;
@@ -9,10 +10,12 @@ import sample.data.jpa.domain.Slot;
 import sample.data.jpa.service.SlotDAO;
 import sample.data.jpa.service.TeacherDAO;
 
+import javax.validation.constraints.PastOrPresent;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/slot")
+@RestControllerAdvice
 public class SlotController {
 
     @Autowired
@@ -28,16 +31,19 @@ public class SlotController {
      */
     @GetMapping("/test")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Endpoint to test the connection to the service")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Slot controller is OK!");
     }
 
     @GetMapping("/all")
+    @Operation(summary = "Get every slots known")
     public ResponseEntity<List<Slot>> getAll() {
         return ResponseEntity.ok(slotDAO.findAll());
     }
 
     @GetMapping("/teacher/{id}")
+    @Operation(summary = "Get every slots for a given teacher")
     public ResponseEntity<List<Slot>> getSlotsByTeacher(@PathVariable(value = "id") Long id) {
         // fetch slots if wanted teacher exists
         if (teacherDAO.findById(id).isPresent())

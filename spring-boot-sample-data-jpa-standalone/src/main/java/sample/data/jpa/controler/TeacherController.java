@@ -1,5 +1,6 @@
 package sample.data.jpa.controler;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/teacher")
+@RestControllerAdvice
 public class TeacherController {
 
     @Autowired
@@ -24,6 +26,7 @@ public class TeacherController {
      */
     @GetMapping("/test")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Endpoint to test the connection to the service")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Teacher controller is OK!");
     }
@@ -36,6 +39,7 @@ public class TeacherController {
      * @throws TeacherException
      */
     @GetMapping("/{id}")
+    @Operation(summary = "Get a teacher from his id")
     public ResponseEntity<Teacher> getTeacherById(@PathVariable(value = "id") Long id) {
         Optional<Teacher> teacher = this.teacherDAO.findById(id);
         return teacher.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
@@ -49,6 +53,7 @@ public class TeacherController {
      * @throws TeacherException
      */
     @PostMapping("/create")
+    @Operation(summary = "Create a teacher from given data")
     public ResponseEntity<Teacher> createTeacher(@RequestBody Teacher teacher) throws TeacherException {
         // The couple first and last name shall be unique
         if (!this.teacherDAO.findTeacherByFirstNameAndLastName(teacher.getFirstName(), teacher.getLastName()).isPresent()) {
