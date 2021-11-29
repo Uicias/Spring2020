@@ -3,6 +3,7 @@ package sample.data.jpa.controler;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sample.data.jpa.domain.Teacher;
@@ -38,7 +39,7 @@ public class TeacherController {
      * @return {@link ResponseEntity} with status code 200 and the wanted teacher in body
      * @throws TeacherException
      */
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get a teacher from his id")
     public ResponseEntity<Teacher> getTeacherById(@PathVariable(value = "id") Long id) {
         Optional<Teacher> teacher = this.teacherDAO.findById(id);
@@ -52,7 +53,7 @@ public class TeacherController {
      * @return the created {@link Teacher}
      * @throws TeacherException
      */
-    @PostMapping("/create")
+    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a teacher from given data")
     public ResponseEntity<Teacher> createTeacher(@RequestBody Teacher teacher) throws TeacherException {
         // The couple first and last name shall be unique

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +41,7 @@ public class UserController {
      * @return {@link ResponseEntity} with status code 200 and the wanted user in body
      * @throws UserException
      */
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get a user from his id")
     public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long id) {
         Optional<User> user = this.userDao.findById(id);
@@ -54,7 +55,7 @@ public class UserController {
      * @return the created {@link User}
      * @throws UserException
      */
-    @PostMapping("/create")
+    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a user from data given")
     public ResponseEntity<User> createUser(@RequestBody User user) throws UserException {
         // The couple first and last name shall be unique

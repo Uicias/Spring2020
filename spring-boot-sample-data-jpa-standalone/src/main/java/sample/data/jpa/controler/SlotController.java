@@ -4,13 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sample.data.jpa.domain.Slot;
 import sample.data.jpa.service.SlotDAO;
 import sample.data.jpa.service.TeacherDAO;
 
-import javax.validation.constraints.PastOrPresent;
 import java.util.List;
 
 @RestController
@@ -36,13 +36,13 @@ public class SlotController {
         return ResponseEntity.ok("Slot controller is OK!");
     }
 
-    @GetMapping("/all")
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get every slots known")
     public ResponseEntity<List<Slot>> getAll() {
         return ResponseEntity.ok(slotDAO.findAll());
     }
 
-    @GetMapping("/teacher/{id}")
+    @GetMapping(value = "/teacher/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get every slots for a given teacher")
     public ResponseEntity<List<Slot>> getSlotsByTeacher(@PathVariable(value = "id") Long id) {
         // fetch slots if wanted teacher exists
