@@ -1,12 +1,11 @@
 package sample.data.jpa.controler;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sample.data.jpa.domain.Appointment;
 import sample.data.jpa.service.AppointmentDAO;
 
@@ -14,6 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/appointment")
+@RestControllerAdvice
+@CrossOrigin(origins = "http://localhost:8080")
 public class AppointmentController {
 
     @Autowired
@@ -26,11 +27,14 @@ public class AppointmentController {
      */
     @GetMapping("/test")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Endpoint to test the connection to the service")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Slot controller is OK!");
     }
 
-    @GetMapping("/all")
+    @GetMapping(value = "/all", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get every appointment known")
     public ResponseEntity<List<Appointment>> getAll(){
         return ResponseEntity.ok(appointmentDAO.findAll());
     }

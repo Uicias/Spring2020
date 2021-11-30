@@ -1,7 +1,9 @@
 package sample.data.jpa.controler;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
+@RestControllerAdvice
+@CrossOrigin(origins = "http://localhost:8080")
 public class UserController {
 
     @Autowired
@@ -25,6 +29,7 @@ public class UserController {
      */
     @GetMapping("/test")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Endpoint to test the connection to the service")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("User controller is OK!");
     }
@@ -36,7 +41,8 @@ public class UserController {
      * @return {@link ResponseEntity} with status code 200 and the wanted user in body
      * @throws UserException
      */
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Get a user from his id")
     public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long id) {
         Optional<User> user = this.userDao.findById(id);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
@@ -49,7 +55,8 @@ public class UserController {
      * @return the created {@link User}
      * @throws UserException
      */
-    @PostMapping("/create")
+    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Create a user from data given")
     public ResponseEntity<User> createUser(@RequestBody User user) throws UserException {
         // The couple first and last name shall be unique
         if (!userDao.findUserByFirstNameAndLastName(user.getFirstName(), user.getLastName()).isPresent()) {
