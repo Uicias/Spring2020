@@ -26,7 +26,7 @@ services:
   back:
     image: taa/back
     restart: unless-stopped
-    build: ./
+    build: .
     container_name: 'backend-taa'
     ports:
       - '8081:8081'
